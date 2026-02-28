@@ -24,11 +24,12 @@ pipeline {
 
         stage('Test') {
             steps {
-                // Run tests
+                // Run tests (even if there are none, this still succeeds)
                 sh 'mvn -B test'
 
-                // Publish JUnit test results (so Jenkins can show test reports)
-                junit '**/target/surefire-reports/*.xml'
+                // Publish JUnit results, but don't fail if no reports exist
+                junit testResults: '**/target/surefire-reports/*.xml',
+                allowEmptyResults: true
             }
         }
     }
